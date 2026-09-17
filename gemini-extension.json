@@ -1,0 +1,14 @@
+{
+  "name": "zarla",
+  "version": "1.0.0",
+  "description": "Build, edit and publish websites from Gemini CLI with Zarla. Sign in with your Zarla account — no keys.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "zarla": {
+      "httpUrl": "https://www.zarla.com/api/mcp",
+      "oauth": {
+        "enabled": true
+      }
+    }
+  }
+}

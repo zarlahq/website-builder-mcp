@@ -1,0 +1,43 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.zarla/website-builder",
+  "title": "Zarla Website Builder",
+  "description": "Build, edit and publish websites from Claude, ChatGPT, Cursor and Gemini. No code — Zarla hosts it.",
+  "version": "1.0.0",
+  "websiteUrl": "https://www.zarla.com/features/mcp-website-builder",
+  "repository": {
+    "url": "https://github.com/zarlahq/website-builder-mcp",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://www.zarla.com/brand/zarla-mark-512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    },
+    {
+      "src": "https://www.zarla.com/brand/zarla-mark-64.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "64x64"
+      ]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://www.zarla.com/api/mcp"
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "documentationUrl": "https://www.zarla.com/help/connect-claude-and-ai-agents",
+      "connectUrl": "https://www.zarla.com/connect",
+      "privacyPolicyUrl": "https://www.zarla.com/privacy",
+      "termsOfServiceUrl": "https://www.zarla.com/terms",
+      "authentication": "oauth2"
+    }
+  }
+}
