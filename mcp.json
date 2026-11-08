@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "zarla": {
+      "type": "http",
+      "url": "https://www.zarla.com/api/mcp"
+    }
+  }
+}

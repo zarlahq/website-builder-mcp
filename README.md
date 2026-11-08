@@ -3,7 +3,7 @@
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-com.zarla%2Fwebsite--builder-1845F5)](https://registry.modelcontextprotocol.io/v0.1/servers?search=com.zarla)
 [![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=zarla&config=eyJ1cmwiOiJodHRwczovL3d3dy56YXJsYS5jb20vYXBpL21jcCJ9)
 
-[Zarla](https://www.zarla.com/features/mcp-website-builder) is an AI website builder with a hosted MCP server. Connect it to any MCP client and build a website from one sentence, edit pages, change the design, set a logo, add products and publish — all from the conversation. No code, no hosting to set up, no API keys.
+[Zarla](https://www.zarla.com/features/mcp-website-builder) is an AI website builder with a hosted MCP server. Connect it to any MCP client and build a website from one sentence, edit pages, change the design, set a logo, add photos and publish — all from the conversation. No code, no hosting to set up, no API keys.
 
 **Connection link (every client uses the same one):**
 
@@ -25,7 +25,7 @@ Step-by-step for each app, with screenshots: **https://www.zarla.com/help/connec
 
 | Client | How |
 |---|---|
-| **Claude** (claude.ai, desktop) | Settings → Connectors → **Add custom connector** → paste the link → sign in. Works on every Claude plan, including Free. |
+| **Claude** (claude.ai, desktop) | Customize → Connectors → **Add** → name it `Zarla`, paste the link as the MCP server URL → **Continue** → sign in. Works on every Claude plan, including Free. |
 | **Claude Code** | `claude mcp add zarla --transport http "https://www.zarla.com/api/mcp"` then `/mcp` to sign in. Or copy this repo's [`.mcp.json`](./.mcp.json) into your project. |
 | **ChatGPT** | Settings → Security and login → **Developer mode** on, then [chatgpt.com/plugins](https://chatgpt.com/plugins) → **+** → name `Zarla`, server URL = the link, auth **OAuth**. |
 | **Cursor** | Click the **Add to Cursor** badge above, or add [`.cursor/mcp.json`](./.cursor/mcp.json) to your project, then **Authenticate** when Cursor asks. |
@@ -36,7 +36,7 @@ Step-by-step for each app, with screenshots: **https://www.zarla.com/help/connec
 
 - "Build a website for my mobile dog-grooming business in Denver."
 - "Rewrite my homepage headline to sound more premium, and add a testimonials section."
-- "Add a $45 Deluxe Wash to my products and publish my site."
+- "Add a page for our spring gutter-cleaning special and publish my site."
 - "What websites do I have on Zarla?"
 - "Show me my website."
 - "Give my site a warmer, more welcoming look."
@@ -59,7 +59,7 @@ You can. You'll get a folder of HTML, or a page in a code sandbox. Then the real
 | **What you get** | Code you have to host yourself | A live website served from Google Cloud on a global CDN. Nothing to deploy. |
 | **Domain, DNS, SSL** | Buy a domain, point the DNS, set up certificates, renew them | Buy or connect a domain inside Zarla. DNS, HTTPS and certificate renewal handled. |
 | **Security** | Yours to patch | HTTPS by default, DDoS protection, no plugins or dependencies to keep updated |
-| **Changing it later** | Re-prompt, re-generate, re-deploy. Earlier edits get lost. | 36 tools edit the real site in place. Draft, preview, one publish step. |
+| **Changing it later** | Re-prompt, re-generate, re-deploy. Earlier edits get lost. | 27 tools edit the real site in place. Draft, preview, one publish step. |
 | **Design** | Whatever the model made up that day | 1,200+ professionally designed templates. Switch designs and keep your content. |
 | **Getting customers** | A contact form that goes nowhere | Lead inbox and CRM, online booking, WhatsApp chat button, gift cards, products with checkout, invoices |
 | **Getting found** | Whatever SEO the model remembered to add | Sitemap, meta tags and structured data on every page. A Get Found score with an SEO coach. Google Search Console and Google Business Profile connected. A playbook for gathering reviews. |
@@ -71,7 +71,7 @@ Your AI app brings the thinking: research, writing, strategy. Zarla brings the w
 
 ## What the server can do
 
-36 tools, every one annotated with a title and the MCP behaviour hints (read-only / destructive / idempotent / open-world), so your client knows which calls to run silently and which to confirm.
+27 tools, every one annotated with a title and the MCP behaviour hints (read-only / destructive / idempotent / open-world), so your client knows which calls to run silently and which to confirm.
 
 | Group | Tools |
 |---|---|
@@ -81,15 +81,14 @@ Your AI app brings the thinking: research, writing, strategy. Zarla brings the w
 | **Design** | `update_design` (colors, fonts, mood), `switch_design` (move onto any of 1,200+ marketplace designs, content kept), `set_logo`, `remove_logo` |
 | **Images** | `request_image_upload` → PUT → `finalize_image_upload` (logos, photos, anything shared in the chat) |
 | **Preview & publish** | `show_site_preview` (live preview panel in clients that support MCP Apps, a preview link elsewhere), `publish_site` |
-| **Shop** | `get_payments_status`, `list_products`, `get_product`, `create_product`, `update_product`, `get_product_settings`, `list_orders`, `get_order`, `request_product_file_upload`, `finalize_product_file_upload` |
+| **Feedback** | `report_unsupported_request` — records a capability the connector can't do yet (a kebab-case name and an optional one-line note; contact details refused, nothing else stored) and returns the editor link, so the ask reaches the team |
 
 The full, always-current list — names, descriptions and input schemas — is served by the server itself at [`/.well-known/mcp/server-card.json`](https://www.zarla.com/.well-known/mcp/server-card.json).
 
 ## How it behaves
 
 - **Drafts first.** Every edit lands in your private draft. Your live site only changes when you ask to publish, and most clients ask you to confirm that step (`publish_site` is marked destructive on purpose).
-- **Publishing needs a paid plan.** On the Free plan the publish tool hands back an upgrade link instead of an error; after upgrading, publishing picks up where it left off.
-- **Shop changes are live.** Product price and availability changes reach checkout immediately — republish after a price change so the site matches.
+- **Publishing needs a paid plan.** On the Free plan the publish tool hands back a link to the plans page instead of an error; after upgrading, publishing picks up where it left off.
 - **You stay in control.** Every connected app is listed at https://www.zarla.com/connect — disconnect one and its access ends immediately.
 
 ## Discovery files
@@ -98,11 +97,12 @@ The full, always-current list — names, descriptions and input schemas — is s
 |---|---|
 | [`server.json`](./server.json) | The entry published to the [official MCP Registry](https://registry.modelcontextprotocol.io) as `com.zarla/website-builder` |
 | [`.mcp.json`](./.mcp.json) · [`.cursor/mcp.json`](./.cursor/mcp.json) | Drop-in client configs (Claude Code · Cursor) |
+| [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json) · [`mcp.json`](./mcp.json) | Cursor plugin: the manifest and the MCP server it installs. To try it locally, copy this repo into `~/.cursor/plugins/local/zarla`, run **Developer: Reload Window**, then check **Customize** lists the Zarla MCP server. Use the plugin or `.cursor/mcp.json`, not both, or Cursor shows two Zarla servers. |
 | [`gemini-extension.json`](./gemini-extension.json) · [`GEMINI.md`](./GEMINI.md) | Gemini CLI extension manifest and context |
 | [`llms-install.md`](./llms-install.md) | Install guidance for AI agents (Cline and similar) |
 | [`glama.json`](./glama.json) | Glama listing ownership |
 | [`assets/`](./assets) | Logo: the sparkle mark (512 / 400 / 128 / 64 px), the wordmark, and product screenshots |
-| `https://www.zarla.com/api/mcp/server-card` · [`/.well-known/ai-catalog.json`](https://www.zarla.com/.well-known/ai-catalog.json) | Server card and catalog per MCP SEP-2127 |
+| `https://www.zarla.com/api/mcp/server-card` · [`/.well-known/ard.json`](https://www.zarla.com/.well-known/ard.json) · [`/.well-known/ai-catalog.json`](https://www.zarla.com/.well-known/ai-catalog.json) | Server card per MCP SEP-2127; the AI catalog per the Agentic Resource Discovery spec (`ard.json`, with `ai-catalog.json` as its predecessor address) |
 | [`/.well-known/oauth-protected-resource`](https://www.zarla.com/.well-known/oauth-protected-resource) | OAuth discovery (RFC 9728) |
 
 ## About this repository

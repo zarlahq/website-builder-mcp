@@ -1,0 +1,22 @@
+{
+  "name": "zarla",
+  "displayName": "Zarla",
+  "version": "1.0.0",
+  "description": "Build, edit and publish websites from Cursor. Zarla hosts them; sign in with your Zarla account, no API keys.",
+  "author": {
+    "name": "Zarla",
+    "email": "hello@zarla.com"
+  },
+  "homepage": "https://www.zarla.com/features/mcp-website-builder",
+  "repository": "https://github.com/zarlahq/website-builder-mcp",
+  "license": "MIT",
+  "keywords": [
+    "website-builder",
+    "websites",
+    "publishing",
+    "hosting",
+    "landing-pages",
+    "mcp"
+  ],
+  "logo": "assets/zarla-mark-512.png"
+}
